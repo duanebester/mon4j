@@ -32,9 +32,9 @@ public class Monitor
         if ( loadNatives() )
         {
             Services services = Services.getInstance(  );
-            //services.addService( new MemoryService() );
+            services.addService( new MemoryService() );
             services.addService( new DiskService() );
-            //services.addService( new CpuService() );
+            services.addService( new CpuService() );
             
             Engine engine = new Engine();
             
@@ -72,7 +72,7 @@ public class Monitor
             Props.getInstance().getProperties().setProperty("os.arch", osArch );
             
             log.info("\n------------------------------------------------");
-            log.info("OS-Name: {} OS-Arch: {}", osName, osArch);
+            log.info("        OS-Name: {} OS-Arch: {}", osName, osArch);
             log.info("\n------------------------------------------------\n");
             
             StringBuilder sb = new StringBuilder();
