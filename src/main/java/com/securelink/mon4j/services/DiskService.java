@@ -1,8 +1,6 @@
 package com.securelink.mon4j.services;
 
-import com.securelink.mon4j.jobs.CpuJob;
 import com.securelink.mon4j.jobs.DiskJob;
-import static org.quartz.JobBuilder.newJob;
 import static org.quartz.JobBuilder.newJob;
 import org.quartz.JobDetail;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;

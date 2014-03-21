@@ -21,7 +21,26 @@ public class NativeUtils {
     
     public static void loadLibraryFromJar(String libName) throws IOException
     {
-        JarFile jar = new JarFile("lib/sigar-native-deps-1.6.4.jar");
+        log.info("lib" + File.separator + "sigar-native-deps-1.6.4.jar");
+        
+        File lib = new File("lib");
+        
+        log.info( "lib exists: {}, is directory: {}, can read: {}", lib.exists(), lib.isDirectory(), lib.canRead());
+        
+        File ourjar = new File("lib" + File.separator + "sigar-native-deps-1.6.4.jar");
+        
+        log.info( "jar exists: {}, is directory: {}, can read: {}", ourjar.exists(), ourjar.isDirectory(), ourjar.canRead());
+        
+        JarFile jar = new JarFile("lib" + File.separator + "sigar-native-deps-1.6.4.jar");
+        
+        jar.stream().forEach((entry) -> {
+            log.info(entry.toString());
+        });
+        
+        
+        log.info(jar.toString());
+        
+        log.info("LibName: {}", libName);
             
         JarEntry myLib = jar.getJarEntry(libName);
 
@@ -44,6 +63,10 @@ public class NativeUtils {
             resourceOS.close();
 
             System.load(file.getAbsolutePath());
+        }
+        else
+        {
+            log.error("null myLib");
         }
     } 
 }

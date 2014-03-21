@@ -4,8 +4,10 @@ import com.securelink.mon4j.services.CpuService;
 import com.securelink.mon4j.services.DiskService;
 import com.securelink.mon4j.services.MemoryService;
 import com.securelink.mon4j.util.NativeUtils;
-import java.io.File;
+import com.securelink.mon4j.util.Props;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,18 +21,63 @@ public class Monitor
 {
     public static final Logger log = LoggerFactory.getLogger( Monitor.class );
     
+    
+    
     public static void main( String args[] )
     {
-        boolean loaded;
+        log.info( "Monitor Started" );
         
+        loadProps();
+        
+        if ( loadNatives() )
+        {
+            Services services = Services.getInstance(  );
+            //services.addService( new MemoryService() );
+            services.addService( new DiskService() );
+            //services.addService( new CpuService() );
+            
+            Engine engine = new Engine();
+            
+            engine.start();
+
+            Runtime.getRuntime().addShutdownHook( new Thread() 
+            {
+                @Override
+                public void run() 
+                {
+                    log.info("Shutting down Engine...");
+
+                    if ( engine != null )
+                    {
+                        engine.stop();
+                    }
+                }
+            });
+        }
+        else
+        {
+            log.error( "Could not load native libs" );
+            System.exit(1);
+        }
+    }
+    
+    private static boolean loadNatives()
+    {
         try
         {
-            String osName = System.getProperty( "os.name" ).replaceAll( " ", "" ).replaceAll( "\"", "" ).toLowerCase().trim();
+            String osName = System.getProperty( "os.name" ).replaceAll( " ", "" ).replaceAll( "\"", "" ).replaceAll("[0-9]","").toLowerCase().trim();
             String osArch = System.getProperty("os.arch").replaceAll("amd64", "x86_64").replaceAll("i386", "x86_64").trim();
+            
+            Props.getInstance().getProperties().setProperty("os.name", osName );
+            Props.getInstance().getProperties().setProperty("os.arch", osArch );
+            
+            log.info("\n------------------------------------------------");
+            log.info("OS-Name: {} OS-Arch: {}", osName, osArch);
+            log.info("\n------------------------------------------------\n");
             
             StringBuilder sb = new StringBuilder();
             
-            sb.append("native").append(File.separator).append(osName).append(File.separator).append(osArch).append(File.separator);
+            sb.append("native").append("/").append(osName).append("/").append(osArch).append("/");
             
             if ( null != osName )
             {
@@ -38,7 +85,7 @@ public class Monitor
                 {
                     case "windows":
                         if ( "x86_64".equals( osArch ) )
-                            NativeUtils.loadLibraryFromJar(sb.append("sigar-amd64-linux.dll").toString());
+                            NativeUtils.loadLibraryFromJar(sb.append("sigar-amd64-winnt.dll").toString());
                         else
                         {
                             // Load multiple
@@ -59,43 +106,60 @@ public class Monitor
                         else
                             NativeUtils.loadLibraryFromJar(sb.append("libsigar-universal-macosx.dylib").toString());
                         break;
+                    default:
+                        log.error("Invalid OS name?");
+                        return false;
                 }
             }
 
-            loaded = true;
+            return true;
             
-        } catch (IOException ex) 
+        } 
+        catch (IOException ex) 
         {
             log.error(ex.getMessage());
-            loaded = false;
+            return false;
         }
-        
-        
-        if ( loaded )
+    }
+    
+    private static void loadProps()
+    {
+        Properties props = new Properties();
+	InputStream input = null;
+ 
+	try 
         {
-            Services services = Services.getInstance();
-            services.addService( new MemoryService() );
-            services.addService( new DiskService() );
-            services.addService( new CpuService() );
+            input = Monitor.class.getClassLoader().getResourceAsStream("mon4j.properties");
             
-            
-            Engine engine = new Engine();
-            
-            engine.start();
-
-            Runtime.getRuntime().addShutdownHook( new Thread() 
+            if( input == null )
             {
-                @Override
-                public void run() 
+                log.error("Sorry, unable to find mon4j.properties");
+                System.exit(1);
+            }
+            
+            props.load(input);
+	} 
+        catch (IOException ex) 
+        {
+            log.error(ex.getMessage());
+            System.exit(1);
+	} 
+        finally 
+        {
+            if (input != null) 
+            {
+                try 
                 {
-                    log.info("Shutting down Engine...");
-
-                    if ( engine != null )
-                    {
-                        engine.stop();
-                    }
+                    input.close();
+                } 
+                catch (IOException e) 
+                {
+                    log.error(e.getMessage());
+                    System.exit(1);
                 }
-            });
-        }
+            }
+	}
+        
+        Props.getInstance().setProperties( props );
     }
 }
