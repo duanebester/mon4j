@@ -1,10 +1,7 @@
 package com.securelink.mon4j.jobs;
 
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -12,10 +9,8 @@ import org.slf4j.LoggerFactory;
  *
  */
 
-public class SystemPropertiesJob implements Job 
+public class SystemPropertiesJob extends BaseJob 
 {
-    public final Logger log = LoggerFactory.getLogger( SystemPropertiesJob.class );
-    
     @Override
     public void execute( JobExecutionContext jec ) throws JobExecutionException 
     {

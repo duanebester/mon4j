@@ -1,5 +1,7 @@
 package com.securelink.mon4j;
 
+import com.securelink.mon4j.services.IService;
+import java.util.List;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -25,6 +27,19 @@ public class Engine
             // Grab the Scheduler instance from the Factory 
             scheduler = StdSchedulerFactory.getDefaultScheduler();
             
+            List<? extends IService> services = Services.getInstance().getServices();
+            
+            services.stream().forEach((service) -> {
+                try
+                {
+                    scheduler.scheduleJob(service.getJob(), service.getTrigger());
+                }
+                catch( SchedulerException se )
+                {
+                    log.error(se.getMessage());
+                }
+            });
+            
             // start it off
             scheduler.start();
 
@@ -43,7 +58,7 @@ public class Engine
         {
             if ( scheduler != null )
             {
-                scheduler.shutdown();
+                scheduler.shutdown( true );
             }
         } 
         catch (SchedulerException ex) 

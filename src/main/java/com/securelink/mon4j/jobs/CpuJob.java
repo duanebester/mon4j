@@ -1,6 +1,6 @@
 package com.securelink.mon4j.jobs;
 
-import org.hyperic.sigar.Mem;
+import org.hyperic.sigar.Cpu;
 import org.hyperic.sigar.SigarException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -11,20 +11,18 @@ import org.quartz.JobExecutionException;
  *
  */
 
-public class MemoryJob extends BaseJob 
+public class CpuJob extends BaseJob 
 {
-    
     @Override
-    public void execute( JobExecutionContext jec ) throws JobExecutionException 
+    public void execute(JobExecutionContext jec) throws JobExecutionException 
     {
-        Mem mem = null;
+        Cpu cpu = null;
         try {
-            mem = sigar.getMem();
+            cpu = sigar.getCpu();
         } catch (SigarException se) {
             log.error(se.getMessage());
         }
-        
-        log.info( "Memory :\n {}", mem.toString() );
-    }
 
+        log.info( "CPU :\n {}", cpu.toString() );
+    }
 }

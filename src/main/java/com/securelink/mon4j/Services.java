@@ -1,14 +1,22 @@
 package com.securelink.mon4j;
 
+import com.securelink.mon4j.services.IService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
+ * @param <S> S implements IService
  *
  */
 
-public class Services 
+public class Services<S extends IService>
 {
     private static volatile Services instance = new Services();
+     
+    private final List<S> services = Collections.synchronizedList( new ArrayList<S>() );
     
     private Services() {}
     
@@ -26,5 +34,18 @@ public class Services
         }
         
         return instance;
+    }
+    
+    public void addService( S service )
+    {
+        services.add( service );
+    }
+
+    /**
+     * @return the services
+     */
+    public List<S> getServices() 
+    {
+        return services;
     }
 }
