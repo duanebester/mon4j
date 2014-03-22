@@ -7,6 +7,8 @@
 package com.securelink.mon4j.services;
 
 import com.securelink.mon4j.jobs.CpuJob;
+import com.securelink.mon4j.util.Props;
+import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
 import org.quartz.JobDetail;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -23,12 +25,19 @@ public class CpuService implements IService
     private static final String TRIGGER = "cpuTrigger";
     private static final String GROUP = "cpuGroup";
     
+    Properties props = Props.getInstance().getProperties();
+    
     private final JobDetail job;
     private final Trigger trigger;
     
     public CpuService()
     {
         job = newJob( CpuJob.class ).withIdentity( JOB, GROUP ).build(  );
+        
+        job.getJobDataMap().put( ARM_VALUE, Integer.parseInt( props.getProperty("cpu.armValue") ));
+        job.getJobDataMap().put( ARM_DELAY, Integer.parseInt( props.getProperty("cpu.armDelay")));
+        job.getJobDataMap().put( RE_ARM_VALUE, Integer.parseInt( props.getProperty("cpu.reArmValue")));
+        job.getJobDataMap().put( OPERATOR, props.getProperty("cpu.operator"));
         
         // Compute a time that is on the next round minute
         //Date runTime = evenSecondDate(new Date());
@@ -37,7 +46,7 @@ public class CpuService implements IService
         trigger = newTrigger().withIdentity( TRIGGER, GROUP )
                 .startNow()
                 .withSchedule(simpleSchedule()
-                    .withIntervalInSeconds(10)
+                    .withIntervalInSeconds(1)
                     .repeatForever())
                 .build();
     }

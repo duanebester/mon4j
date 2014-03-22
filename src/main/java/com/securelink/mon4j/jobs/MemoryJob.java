@@ -19,12 +19,12 @@ public class MemoryJob extends BaseJob
     {
         Mem mem = null;
         try {
-            mem = sigar.getMem();
+            mem = getSigar().getMem();
         } catch (SigarException se) {
             log.error(se.getMessage());
         }
         
-        log.info( "Memory :\n {}", mem.toString() );
+        log.info( ">>--- Memory --> {}", mem.toString() );
     }
 
 }

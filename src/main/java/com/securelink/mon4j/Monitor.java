@@ -32,8 +32,8 @@ public class Monitor
         if ( loadNatives() )
         {
             Services services = Services.getInstance(  );
-            services.addService( new MemoryService() );
-            services.addService( new DiskService() );
+            //services.addService( new MemoryService() );
+            //services.addService( new DiskService() );
             services.addService( new CpuService() );
             
             Engine engine = new Engine();

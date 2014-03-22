@@ -7,11 +7,12 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>mon4j.log</file>
+    <appender name="JOBS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>jobs.log</file>
+        <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>mon4j.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>jobs.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- keep 1 days' worth of history -->
             <maxHistory>5</maxHistory>
@@ -21,7 +22,11 @@
             <pattern>%d{HH:mm:ss.SSS}  %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
-
+    
+    <logger name="jobs" level="INFO" additivity="false">
+        <appender-ref ref="JOBS"/>
+    </logger>
+    
     <root level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
     </root>

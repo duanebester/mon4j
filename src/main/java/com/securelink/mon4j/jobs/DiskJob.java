@@ -33,13 +33,13 @@ public class DiskJob extends BaseJob
                 // Only check C Drive
                 if ( win && fName.contains("C:") )
                 {
-                    log.info("{} Disk Usage: {}", fName, sigar.getDiskUsage( fName ).toString() );
-                    log.info("{} FileSystem Usage: {}", fName, sigar.getFileSystemUsage( fName ).toString() );
+                    log.info("{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
+                    log.info("{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
                 }
                 else
                 {
-                    log.info("{} Disk Usage: {}", fName, sigar.getDiskUsage( fName ).toString() );
-                    log.info("{} FileSystem Usage: {}", fName, sigar.getFileSystemUsage( fName ).toString() );
+                    log.info("{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
+                    log.info("{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
                 }
             }
 
