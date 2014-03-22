@@ -9,17 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class Engine 
+public class Engine
 {
     private final Logger log = LoggerFactory.getLogger( Engine.class );
-    
+
     private Scheduler scheduler;
-    
+
     public boolean start()
     {
         try 
@@ -51,21 +49,21 @@ public class Engine
         log.info( "Engine started" );
         return true;
     }
-    
+
     public void stop()
     {
-        try 
+        try
         {
             if ( scheduler != null )
             {
                 scheduler.shutdown( true );
             }
-        } 
-        catch (SchedulerException ex) 
+        }
+        catch ( SchedulerException ex )
         {
             log.error( ex.getMessage() );
         }
-        
+
         log.info( "Engine shutdown" );
     }
 }

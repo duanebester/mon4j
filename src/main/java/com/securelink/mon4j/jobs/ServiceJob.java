@@ -5,14 +5,12 @@ import org.hyperic.sigar.win32.Win32Exception;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class ServiceJob extends BaseJob
+public class ServiceJob
+    extends BaseJob
 {
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException 

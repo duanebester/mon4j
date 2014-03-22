@@ -6,25 +6,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
  * @param <S> S implements IService
- *
  */
 
 public class Services<S extends IService>
 {
     private static volatile Services instance = new Services();
-     
+
     private final List<S> services = Collections.synchronizedList( new ArrayList<S>() );
-    
-    private Services() {}
-    
-    public static Services getInstance() 
+
+    private Services()
+    {
+    }
+
+    public static Services getInstance()
     {
         if ( instance == null )
         {
-            synchronized( Services.class )
+            synchronized ( Services.class )
             {
                 if ( instance == null )
                 {
@@ -32,10 +32,10 @@ public class Services<S extends IService>
                 }
             }
         }
-        
+
         return instance;
     }
-    
+
     public void addService( S service )
     {
         services.add( service );
@@ -44,7 +44,7 @@ public class Services<S extends IService>
     /**
      * @return the services
      */
-    public List<S> getServices() 
+    public List<S> getServices()
     {
         return services;
     }

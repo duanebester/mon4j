@@ -10,15 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class NativeUtils {
-    
+public class NativeUtils
+{
+
     public static final Logger log = LoggerFactory.getLogger( NativeUtils.class );
-    
+
     public static void loadLibraryFromJar(String libName) throws IOException
     {
         log.info("lib" + File.separator + "sigar-native-deps-1.6.4.jar");
@@ -68,5 +67,4 @@ public class NativeUtils {
         {
             log.error("null myLib");
         }
-    } 
-}
+    }}

@@ -4,12 +4,11 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class SystemPropertiesJob extends BaseJob 
+public class SystemPropertiesJob
+    extends BaseJob
 {
     @Override
     public void execute( JobExecutionContext jec ) throws JobExecutionException 

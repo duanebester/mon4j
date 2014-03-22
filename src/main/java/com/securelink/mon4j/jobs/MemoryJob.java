@@ -6,24 +6,27 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class MemoryJob extends BaseJob 
+public class MemoryJob
+    extends BaseJob
 {
-    
+
     @Override
-    public void execute( JobExecutionContext jec ) throws JobExecutionException 
+    public void execute( JobExecutionContext jec )
+        throws JobExecutionException
     {
         Mem mem = null;
-        try {
+        try
+        {
             mem = getSigar().getMem();
-        } catch (SigarException se) {
-            log.error(se.getMessage());
         }
-        
+        catch ( SigarException se )
+        {
+            log.error( se.getMessage() );
+        }
+
         log.info( ">>--- Memory --> {}", mem.toString() );
     }
 

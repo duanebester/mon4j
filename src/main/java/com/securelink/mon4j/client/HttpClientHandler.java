@@ -12,15 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> 
+public class HttpClientHandler
+    extends SimpleChannelInboundHandler<HttpObject>
 {
     private final Logger log = LoggerFactory.getLogger( HttpClientHandler.class );
-    
+
     @Override
     public void messageReceived(ChannelHandlerContext ctx, HttpObject msg) throws Exception 
     {
@@ -57,11 +56,12 @@ public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject>
             }
         }
     }
-  
-      @Override
-      public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception 
-      {
-          log.info( cause.getMessage() );
-          ctx.close();
-      }
+
+    @Override
+    public void exceptionCaught( ChannelHandlerContext ctx, Throwable cause )
+        throws Exception
+    {
+        log.info( cause.getMessage() );
+        ctx.close();
+    }
 }

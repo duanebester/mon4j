@@ -7,46 +7,48 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class DiskJob extends BaseJob 
+public class DiskJob
+    extends BaseJob
 {
 
     @Override
-    public void execute(JobExecutionContext jec) throws JobExecutionException 
+    public void execute( JobExecutionContext jec )
+        throws JobExecutionException
     {
-        try 
+        try
         {
             File[] roots = File.listRoots();
-                      
+
             for ( File file : roots )
             {
-                boolean win = "windows".equals( Props.getInstance().getProperties().getProperty("os.name"));
-                
+                boolean win = "windows".equals( Props.getInstance().getProperties().getProperty( "os.name" ) );
+
                 String fName = win ? file.getAbsolutePath() + "\\" : file.getAbsolutePath();
-                
-                log.info(fName);
-                
+
+                log.info( fName );
+
                 // Only check C Drive
-                if ( win && fName.contains("C:") )
+                if ( win && fName.contains( "C:" ) )
                 {
-                    log.info("{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
-                    log.info("{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
+                    log.info( "{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
+                    log.info( "{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
                 }
                 else
                 {
-                    log.info("{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
-                    log.info("{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
+                    log.info( "{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
+                    log.info( "{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
                 }
             }
 
-        } catch (SigarException ex) {
-            log.error(ex.getMessage());
         }
-        
+        catch ( SigarException ex )
+        {
+            log.error( ex.getMessage() );
+        }
+
     }
-    
+
 }
