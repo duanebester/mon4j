@@ -1,7 +1,5 @@
 package com.securelink.mon4j.jobs;
 
-import java.util.Date;
-
 
 /**
  *
@@ -10,29 +8,32 @@ import java.util.Date;
 public abstract class BaseArmJob extends BaseJob implements IArmJob 
 {
     private JobState state = JobState.NORMAL;
-    
-    private Date timer;
-    
-    public JobState getState()
+    private Long time2TriggerAlarm;
+    private final Long thresholdWait = getArmDelay()*1000L; //Why not store ArmDelay as milliseconds?
+    private Long now;
+
+
+    public JobState stateProcessor() // State engine processor.
     {
+        //precalc current time (now)
+        now = System.currentTimeMillis();
+
         switch(state) 
         {
             case NORMAL :
-                if ( getCurrentValue() > getArmValue() )
+                if ( getCurrentValue() >= getArmValue() )
                 {
                     state = JobState.PENDING;
-                    timer = new Date();
+                    //precalc of time2TriggerAlarm will help speed up processing
+                    time2TriggerAlarm = System.currentTimeMillis() + thresholdWait; //time in future
                 }
                 break;
             case PENDING :
-                Date now = new Date();
-                Long delay = (long) getArmDelay() * 1000;
                 if ( getCurrentValue() < getReArmValue() )
                 {
                     state = JobState.NORMAL;
-                    timer = new Date();
                 }
-                else if ( now.getTime() < ( timer.getTime() + delay ) )
+                else if ( now > time2TriggerAlarm ) // While less, stay in pending  
                 {
                     state = JobState.ALERT;
                 }
@@ -40,14 +41,11 @@ public abstract class BaseArmJob extends BaseJob implements IArmJob
             case ALERT :
                 if ( getCurrentValue() < getReArmValue() )
                 {
-                    state = JobState.ALERT;
+                    state = JobState.NORMAL; //NORMAL
                 }
                 break;
             default :
                 state = JobState.NORMAL;
-                timer = new Date();
-                break;
-                
         }
         
         return state;

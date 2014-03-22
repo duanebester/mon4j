@@ -22,7 +22,7 @@ public class CpuJob extends BaseArmJob
     
     private int currentValue;
     
-    private String operator = "percent";
+    private String operator; // Known to do percent
     
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException 
@@ -37,13 +37,16 @@ public class CpuJob extends BaseArmJob
         
         operator = jdm.getString( OPERATOR );
         
+        // TODO: Multicore CPU
+        
         CpuPerc perc;
         try 
         {
             perc = getSigar().getCpuPerc();
             log.info( "System={}", perc.getSys() );
             log.info( "User={}", perc.getUser() );
-            currentValue = (int) perc.getSys();
+            log.info( "Combined={}", perc.getCombined() );
+            currentValue = (int) perc.getCombined();
         } 
         catch (SigarException ex) 
         {
@@ -52,7 +55,7 @@ public class CpuJob extends BaseArmJob
             currentValue = -1;
         }
         
-        log.info( "State: {}", getState() );
+        log.info( "State: {}", stateProcessor() );
         log.info( "ArmValue {}", getArmValue() );
         log.info( ">>--- CPU --> {}", currentValue );
     }
@@ -131,7 +134,4 @@ public class CpuJob extends BaseArmJob
     public void setOperator(String operator) {
         this.operator = operator;
     }
-
-    
-    
 }

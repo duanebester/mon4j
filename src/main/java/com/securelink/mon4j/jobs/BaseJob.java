@@ -17,14 +17,18 @@ import org.slf4j.LoggerFactory;
 @DisallowConcurrentExecution
 public abstract class BaseJob implements Job
 {
-
+    private static final Sigar sigar = new Sigar(); 
+    private final Object lock = new Object();
+    public Logger log = LoggerFactory.getLogger( "jobs" );
+    
     /**
      * @return the sigar
      */
-    public synchronized Sigar getSigar() {
-        return sigar;
-    }
-    public Logger log = LoggerFactory.getLogger( "jobs" );
-    
-    private static final Sigar sigar = new Sigar();  
+    public final Sigar getSigar() 
+    {
+        synchronized(lock)
+        {
+            return sigar;
+        }
+    } 
 }

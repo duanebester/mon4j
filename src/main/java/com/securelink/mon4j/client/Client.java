@@ -47,7 +47,7 @@ public class Client
           }
   
           if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
-              System.err.println("Only HTTP(S) is supported.");
+              log.error("Only HTTP(S) is supported.");
               return;
           }
   
