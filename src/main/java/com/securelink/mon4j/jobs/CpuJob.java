@@ -4,6 +4,8 @@ import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.SigarException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
@@ -12,13 +14,13 @@ import org.quartz.JobExecutionException;
 public class CpuJob
     extends BaseArmJob
 {
+    public Logger log = LoggerFactory.getLogger( CpuJob.class );
+
     @Override
     public void execute( JobExecutionContext jec )
         throws JobExecutionException
     {
         setup( jec );
-
-        // TODO: Multicore CPU
 
         CpuPerc perc;
         try

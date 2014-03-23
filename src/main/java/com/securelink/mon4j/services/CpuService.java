@@ -46,7 +46,8 @@ public class CpuService
         // Date runTime = evenSecondDate(new Date());
 
         // Trigger the job to run on the next round minute
-        trigger = newTrigger().withIdentity( TRIGGER, GROUP ).startNow().withSchedule( simpleSchedule().withIntervalInSeconds( 1 ).repeatForever() ).build();
+        trigger =
+            newTrigger().withIdentity( TRIGGER, GROUP ).startNow().withSchedule( simpleSchedule().withIntervalInSeconds( Integer.parseInt( props.getProperty( "cpu.intervalInSeconds" ) ) ).repeatForever() ).build();
     }
 
     /**

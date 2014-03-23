@@ -1,4 +1,5 @@
 <configuration>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
      ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -7,12 +8,11 @@
         </encoder>
     </appender>
 
-    <appender name="JOBS" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>jobs.log</file>
-        <append>true</append>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logFile.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>jobs.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- keep 1 days' worth of history -->
             <maxHistory>5</maxHistory>
@@ -22,13 +22,10 @@
             <pattern>%d{HH:mm:ss.SSS}  %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
-    
-    <logger name="jobs" level="INFO" additivity="false">
-        <appender-ref ref="JOBS"/>
-    </logger>
-    
+
     <root level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 

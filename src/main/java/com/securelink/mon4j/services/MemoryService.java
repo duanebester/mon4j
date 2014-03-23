@@ -32,16 +32,17 @@ public class MemoryService
     {
         job = newJob( MemoryJob.class ).withIdentity( JOB, GROUP ).build();
 
-        job.getJobDataMap().put( ARM_VALUE, Integer.parseInt( props.getProperty( "ram.armValue" ) ) );
+        job.getJobDataMap().put( ARM_VALUE, Double.parseDouble( props.getProperty( "ram.armValue" ) ) );
         job.getJobDataMap().put( ARM_DELAY, Integer.parseInt( props.getProperty( "ram.armDelay" ) ) );
-        job.getJobDataMap().put( RE_ARM_VALUE, Integer.parseInt( props.getProperty( "ram.reArmValue" ) ) );
+        job.getJobDataMap().put( RE_ARM_VALUE, Double.parseDouble( props.getProperty( "ram.reArmValue" ) ) );
         job.getJobDataMap().put( OPERATOR, props.getProperty( "ram.operator" ) );
 
         // Compute a time that is on the next round minute
         // Date runTime = evenSecondDate(new Date());
 
         // Trigger the job to run on the next round minute
-        trigger = newTrigger().withIdentity( TRIGGER, GROUP ).startNow().withSchedule( simpleSchedule().withIntervalInSeconds( 10 ).repeatForever() ).build();
+        trigger =
+            newTrigger().withIdentity( TRIGGER, GROUP ).startNow().withSchedule( simpleSchedule().withIntervalInSeconds( Integer.parseInt( props.getProperty( "ram.intervalInSeconds" ) ) ).repeatForever() ).build();
     }
 
     /**

@@ -41,7 +41,8 @@ public class DiskService
         // Date runTime = evenSecondDate(new Date());
 
         // Trigger the job to run on the next round minute
-        trigger = newTrigger().withIdentity( TRIGGER, GROUP ).startNow().withSchedule( simpleSchedule().withIntervalInSeconds( 10 ).repeatForever() ).build();
+        trigger =
+            newTrigger().withIdentity( TRIGGER, GROUP ).startNow().withSchedule( simpleSchedule().withIntervalInSeconds( Integer.parseInt( props.getProperty( "disk.intervalInSeconds" ) ) ).repeatForever() ).build();
     }
 
     /**
