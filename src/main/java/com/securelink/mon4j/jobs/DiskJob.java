@@ -1,7 +1,7 @@
 package com.securelink.mon4j.jobs;
 
-import com.securelink.mon4j.util.Props;
 import java.io.File;
+import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.SigarException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -11,35 +11,36 @@ import org.quartz.JobExecutionException;
  */
 
 public class DiskJob
-    extends BaseJob
+    extends BaseArmJob
 {
 
     @Override
     public void execute( JobExecutionContext jec )
         throws JobExecutionException
     {
+        setup( jec );
+
+        boolean win = "windows".equals( props.getProperty( "os.name" ) );
+
         try
         {
             File[] roots = File.listRoots();
 
             for ( File file : roots )
             {
-                boolean win = "windows".equals( Props.getInstance().getProperties().getProperty( "os.name" ) );
-
                 String fName = win ? file.getAbsolutePath() + "\\" : file.getAbsolutePath();
 
                 log.info( fName );
 
-                // Only check C Drive
-                if ( win && fName.contains( "C:" ) )
+                // Only check C Drive if windows
+                if ( true /* !( win || !fName.contains( "C:" ) ) */)
                 {
-                    log.info( "{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
-                    log.info( "{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
-                }
-                else
-                {
-                    log.info( "{} Disk Usage: {}", fName, getSigar().getDiskUsage( fName ).toString() );
-                    log.info( "{} FileSystem Usage: {}", fName, getSigar().getFileSystemUsage( fName ).toString() );
+                    FileSystemUsage fsu = getSigar().getFileSystemUsage( fName );
+
+                    if ( "percent".equals( getOperator() ) )
+                    {
+                        setCurrentValue( fsu.getUsePercent() * 100L );
+                    }
                 }
             }
 
@@ -49,6 +50,9 @@ public class DiskJob
             log.error( ex.getMessage() );
         }
 
+        log.info( "State: {}", stateProcessor() );
+        log.info( "ArmValue {}", getArmValue() );
+        log.info( ">>--- DISK --> {}", getCurrentValue() );
     }
 
 }

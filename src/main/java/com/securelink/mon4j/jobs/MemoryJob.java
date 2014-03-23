@@ -10,13 +10,15 @@ import org.quartz.JobExecutionException;
  */
 
 public class MemoryJob
-    extends BaseJob
+    extends BaseArmJob
 {
 
     @Override
     public void execute( JobExecutionContext jec )
         throws JobExecutionException
     {
+        setup( jec );
+
         Mem mem = null;
         try
         {

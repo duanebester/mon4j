@@ -1,6 +1,8 @@
 package com.securelink.mon4j.services;
 
 import com.securelink.mon4j.jobs.DiskJob;
+import com.securelink.mon4j.util.Props;
+import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
 import org.quartz.JobDetail;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -24,9 +26,16 @@ public class DiskService
 
     private final Trigger trigger;
 
+    Properties props = Props.getInstance().getProperties();
+
     public DiskService()
     {
         job = newJob( DiskJob.class ).withIdentity( JOB, GROUP ).build();
+
+        job.getJobDataMap().put( ARM_VALUE, Integer.parseInt( props.getProperty( "disk.armValue" ) ) );
+        job.getJobDataMap().put( ARM_DELAY, Integer.parseInt( props.getProperty( "disk.armDelay" ) ) );
+        job.getJobDataMap().put( RE_ARM_VALUE, Integer.parseInt( props.getProperty( "disk.reArmValue" ) ) );
+        job.getJobDataMap().put( OPERATOR, props.getProperty( "disk.operator" ) );
 
         // Compute a time that is on the next round minute
         // Date runTime = evenSecondDate(new Date());

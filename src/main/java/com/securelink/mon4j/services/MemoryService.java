@@ -1,6 +1,8 @@
 package com.securelink.mon4j.services;
 
 import com.securelink.mon4j.jobs.MemoryJob;
+import com.securelink.mon4j.util.Props;
+import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
 import org.quartz.JobDetail;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -24,9 +26,16 @@ public class MemoryService
 
     private final Trigger trigger;
 
+    Properties props = Props.getInstance().getProperties();
+
     public MemoryService()
     {
         job = newJob( MemoryJob.class ).withIdentity( JOB, GROUP ).build();
+
+        job.getJobDataMap().put( ARM_VALUE, Integer.parseInt( props.getProperty( "ram.armValue" ) ) );
+        job.getJobDataMap().put( ARM_DELAY, Integer.parseInt( props.getProperty( "ram.armDelay" ) ) );
+        job.getJobDataMap().put( RE_ARM_VALUE, Integer.parseInt( props.getProperty( "ram.reArmValue" ) ) );
+        job.getJobDataMap().put( OPERATOR, props.getProperty( "ram.operator" ) );
 
         // Compute a time that is on the next round minute
         // Date runTime = evenSecondDate(new Date());

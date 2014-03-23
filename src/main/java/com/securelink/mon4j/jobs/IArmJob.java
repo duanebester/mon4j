@@ -1,5 +1,7 @@
 package com.securelink.mon4j.jobs;
 
+import org.quartz.JobExecutionException;
+
 /**
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
  */
@@ -15,15 +17,16 @@ public interface IArmJob
 
     public static final String OPERATOR = "operator";
 
-    public int getArmValue();
+    public double getArmValue();
 
-    public int getCurrentValue();
+    public double getCurrentValue();
 
-    public int getReArmValue();
+    public double getReArmValue();
 
     public int getArmDelay();
 
     public String getOperator();
 
-    public JobState stateProcessor();
+    public JobState stateProcessor()
+        throws JobExecutionException;
 }

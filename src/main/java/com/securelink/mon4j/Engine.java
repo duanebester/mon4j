@@ -25,7 +25,7 @@ public class Engine
             // Grab the Scheduler instance from the Factory 
             scheduler = StdSchedulerFactory.getDefaultScheduler();
             
-            List<? extends IService> services = Services.getInstance().getServices();
+            List<IService> services = Services.getInstance().getServices();
             
             services.stream().forEach((service) -> {
                 try
