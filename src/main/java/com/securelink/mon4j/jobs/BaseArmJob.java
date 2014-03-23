@@ -25,11 +25,11 @@ public abstract class BaseArmJob
 
     private String operator; // Known to do percent
 
-    private JobState state = JobState.NORMAL;
+    private JobState state;
 
     private Long time2TriggerAlarm;
 
-    private final Long thresholdWait = getArmDelay() * 1000L; // Why not store ArmDelay as milliseconds?
+    private Long thresholdWait; // Why not store ArmDelay as milliseconds?
 
     private Long now;
 
@@ -37,42 +37,53 @@ public abstract class BaseArmJob
     {
         JobDataMap jdm = jec.getJobDetail().getJobDataMap();
 
-        setArmValue( jdm.getInt( ARM_VALUE ) );
+        setArmValue( jdm.getDouble( ARM_VALUE ) );
 
-        setReArmValue( jdm.getInt( RE_ARM_VALUE ) );
+        setReArmValue( jdm.getDouble( RE_ARM_VALUE ) );
 
         setArmDelay( jdm.getInt( ARM_DELAY ) );
 
         setOperator( jdm.getString( OPERATOR ) );
+
+        state = ( jdm.get( JOB_STATE ) == null ) ? JobState.NORMAL : (JobState) jdm.get( JOB_STATE );
+
+        time2TriggerAlarm = ( jdm.get( TIME_TO_TRIGGER ) == null ) ? 0 : (long) jdm.get( TIME_TO_TRIGGER );
+
+        thresholdWait = getArmDelay() * 1000L;
     }
 
     @Override
-    public JobState stateProcessor()
+    public JobState stateProcessor( JobExecutionContext jec )
         throws JobExecutionException // State engine processor.
     {
+        JobDataMap jdm = jec.getJobDetail().getJobDataMap();
         // precalc current time (now)
         now = System.currentTimeMillis();
 
-        switch ( state )
+        log.info( "Current State: {}", getState() );
+
+        switch ( getState() )
         {
             case NORMAL:
                 if ( getCurrentValue() >= getArmValue() )
                 {
                     state = JobState.PENDING;
                     // precalc of time2TriggerAlarm will help speed up processing
-                    time2TriggerAlarm = System.currentTimeMillis() + thresholdWait; // time in future
-
+                    time2TriggerAlarm = now + thresholdWait; // time in future
+                    log.info( "CurrentVal {} >= ArmValue {} -- time2TriggerAlarm = {} -- thresholdWait = {}", getCurrentValue(), getArmValue(), time2TriggerAlarm, thresholdWait );
+                    jdm.put( TIME_TO_TRIGGER, time2TriggerAlarm );
                 }
                 break;
             case PENDING:
+                log.info( "PENDING: now = {}, time2Trigger = {}", now, time2TriggerAlarm );
                 if ( getCurrentValue() < getReArmValue() )
                 {
                     state = JobState.NORMAL;
+                    log.info( "Current {} < ReArm {} Switching to NORMAL", getCurrentValue(), getReArmValue() );
                 }
                 else if ( now > time2TriggerAlarm ) // While less, stay in pending  
                 {
                     state = JobState.ALERT;
-                    throw new JobExecutionException( "Crossed Arm Value" );
                 }
                 break;
             case ALERT:
@@ -84,6 +95,8 @@ public abstract class BaseArmJob
             default:
                 state = JobState.NORMAL;
         }
+
+        jdm.put( JOB_STATE, state );
 
         return state;
     }
@@ -171,5 +184,13 @@ public abstract class BaseArmJob
     public void setOperator( String operator )
     {
         this.operator = operator;
+    }
+
+    /**
+     * @return the state
+     */
+    public JobState getState()
+    {
+        return state;
     }
 }

@@ -32,9 +32,9 @@ public class DiskService
     {
         job = newJob( DiskJob.class ).withIdentity( JOB, GROUP ).build();
 
-        job.getJobDataMap().put( ARM_VALUE, Integer.parseInt( props.getProperty( "disk.armValue" ) ) );
+        job.getJobDataMap().put( ARM_VALUE, Double.parseDouble( props.getProperty( "disk.armValue" ) ) );
         job.getJobDataMap().put( ARM_DELAY, Integer.parseInt( props.getProperty( "disk.armDelay" ) ) );
-        job.getJobDataMap().put( RE_ARM_VALUE, Integer.parseInt( props.getProperty( "disk.reArmValue" ) ) );
+        job.getJobDataMap().put( RE_ARM_VALUE, Double.parseDouble( props.getProperty( "disk.reArmValue" ) ) );
         job.getJobDataMap().put( OPERATOR, props.getProperty( "disk.operator" ) );
 
         // Compute a time that is on the next round minute

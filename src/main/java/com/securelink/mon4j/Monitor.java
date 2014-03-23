@@ -29,8 +29,8 @@ public class Monitor
         {
             Services services = Services.getInstance();
             // services.addService( new MemoryService() );
-            services.addService( new DiskService() );
-            // services.addService( new CpuService() );
+            // services.addService( new DiskService() );
+            services.addService( new CpuService() );
 
             Engine engine = new Engine();
 

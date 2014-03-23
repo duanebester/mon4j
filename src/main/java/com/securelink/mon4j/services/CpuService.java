@@ -37,9 +37,9 @@ public class CpuService
     {
         job = newJob( CpuJob.class ).withIdentity( JOB, GROUP ).build();
 
-        job.getJobDataMap().put( ARM_VALUE, Integer.parseInt( props.getProperty( "cpu.armValue" ) ) );
+        job.getJobDataMap().put( ARM_VALUE, Double.parseDouble( props.getProperty( "cpu.armValue" ) ) );
         job.getJobDataMap().put( ARM_DELAY, Integer.parseInt( props.getProperty( "cpu.armDelay" ) ) );
-        job.getJobDataMap().put( RE_ARM_VALUE, Integer.parseInt( props.getProperty( "cpu.reArmValue" ) ) );
+        job.getJobDataMap().put( RE_ARM_VALUE, Double.parseDouble( props.getProperty( "cpu.reArmValue" ) ) );
         job.getJobDataMap().put( OPERATOR, props.getProperty( "cpu.operator" ) );
 
         // Compute a time that is on the next round minute

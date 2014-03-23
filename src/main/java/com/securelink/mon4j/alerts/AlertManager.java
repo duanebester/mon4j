@@ -1,7 +1,6 @@
 package com.securelink.mon4j.alerts;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.slf4j.Logger;

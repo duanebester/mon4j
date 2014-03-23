@@ -27,7 +27,7 @@ public class CpuJob
             log.info( "System={}", perc.getSys() );
             log.info( "User={}", perc.getUser() );
             log.info( "Combined={}", perc.getCombined() );
-            setCurrentValue( perc.getCombined() );
+            setCurrentValue( perc.getCombined() * 100L );
         }
         catch ( SigarException ex )
         {
@@ -36,8 +36,12 @@ public class CpuJob
             setCurrentValue( -1 );
         }
 
-        log.info( "State: {}", stateProcessor() );
         log.info( "ArmValue {}", getArmValue() );
         log.info( ">>--- CPU --> {}", getCurrentValue() );
+
+        if ( stateProcessor( jec ) == JobState.ALERT )
+        {
+            throw new JobExecutionException( "CPU has been running over " + getArmValue() + " for " + getArmDelay() + " seconds" );
+        }
     }
 }

@@ -50,9 +50,13 @@ public class DiskJob
             log.error( ex.getMessage() );
         }
 
-        log.info( "State: {}", stateProcessor() );
         log.info( "ArmValue {}", getArmValue() );
         log.info( ">>--- DISK --> {}", getCurrentValue() );
+
+        if ( stateProcessor( jec ) == JobState.ALERT )
+        {
+            throw new JobExecutionException( "ALERT!" );
+        }
     }
 
 }

@@ -40,7 +40,7 @@ public class AlertListener
     @Override
     public void jobWasExecuted( JobExecutionContext jec, JobExecutionException jee )
     {
-        if ( !jee.getMessage().equals( "" ) )
+        if ( jee != null )
         {
             String jobKey = jec.getJobDetail().getKey().toString();
             String info = jee.getMessage();

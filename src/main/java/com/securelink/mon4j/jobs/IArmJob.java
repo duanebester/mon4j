@@ -1,5 +1,6 @@
 package com.securelink.mon4j.jobs;
 
+import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
@@ -17,6 +18,10 @@ public interface IArmJob
 
     public static final String OPERATOR = "operator";
 
+    public static final String JOB_STATE = "jobState";
+
+    public static final String TIME_TO_TRIGGER = "time2Trigger";
+
     public double getArmValue();
 
     public double getCurrentValue();
@@ -27,6 +32,6 @@ public interface IArmJob
 
     public String getOperator();
 
-    public JobState stateProcessor()
+    public JobState stateProcessor( JobExecutionContext jec )
         throws JobExecutionException;
 }

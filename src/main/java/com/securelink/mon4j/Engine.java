@@ -1,10 +1,12 @@
 package com.securelink.mon4j;
 
+import com.securelink.mon4j.alerts.AlertListener;
 import com.securelink.mon4j.services.IService;
 import java.util.List;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.matchers.EverythingMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +40,10 @@ public class Engine
                 }
             });
             
+            // Listen for Job Executions throwing alerts
+            AlertListener listen = new AlertListener();
+            
+            scheduler.getListenerManager().addJobListener(listen, EverythingMatcher.allJobs());
             // start it off
             scheduler.start();
 
