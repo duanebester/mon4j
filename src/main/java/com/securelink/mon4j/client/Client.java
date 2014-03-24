@@ -70,8 +70,10 @@ public class Client
             // Make the connection attempt.
             Channel ch = b.connect( host, port ).sync().channel();
 
+            log.info( "URI path={}, rawPath={}, query={}. rawQuery={}", uri.getPath(), uri.getRawPath(), uri.getQuery(), uri.getRawQuery() );
+
             // Prepare the HTTP request.
-            HttpRequest request = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, uri.getRawPath() );
+            HttpRequest request = new DefaultFullHttpRequest( HttpVersion.HTTP_1_1, HttpMethod.GET, uri.getPath() + "?" + uri.getQuery() );
             request.headers().set( HttpHeaders.Names.HOST, host );
             request.headers().set( HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE );
             request.headers().set( HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP );

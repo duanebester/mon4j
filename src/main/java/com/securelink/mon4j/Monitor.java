@@ -29,9 +29,19 @@ public class Monitor
         if ( loadNatives() )
         {
             Services services = Services.getInstance();
-            services.addService( new MemoryService() );
-            services.addService( new DiskService() );
-            services.addService( new CpuService() );
+
+            if ( "true".equals( Props.getInstance().getProperties().getProperty( "ram.on" ) ) )
+            {
+                services.addService( new MemoryService() );
+            }
+            if ( "true".equals( Props.getInstance().getProperties().getProperty( "disk.on" ) ) )
+            {
+                services.addService( new DiskService() );
+            }
+            if ( "true".equals( Props.getInstance().getProperties().getProperty( "cpu.on" ) ) )
+            {
+                services.addService( new CpuService() );
+            }
 
             Engine engine = new Engine();
 

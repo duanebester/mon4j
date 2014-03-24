@@ -51,7 +51,7 @@ public class AlertManager
 
     public void processAlert( String category, String info, String key )
     {
-        Alert alert = new Alert( category, info, 0, key );
+        Alert alert = new Alert( category, info, 1, key );
         processAlert( alert );
     }
 
