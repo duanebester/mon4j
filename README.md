@@ -1,7 +1,9 @@
 mon4j
 =====
 
-Monitoring for Java
+Alert Monitoring for Java
+
+*Combining Sigar, Netty, and Quartz*
 
 To build:
 
@@ -19,3 +21,8 @@ After maven package, you will have a mon4j jar, a lib folder, and a mon4j.proper
 Please edit the mon4j.properties file, or at least take a look to see what's adjustable.
 
     java -jar mon4j-0.1.0.jar
+
+To do:
+
+* Have a separate branch / option for Java 7
+* Finish The AlertManager to only send alerts based on priority changes
