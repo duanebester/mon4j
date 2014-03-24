@@ -11,7 +11,7 @@ You will want to add the sigar-native-dependencies jar into your class path. The
 
     mvn package
 
-To Run:
+To run:
 
 
 After maven package, you will have a mon4j jar, a lib folder, and a mon4j.properties file.
