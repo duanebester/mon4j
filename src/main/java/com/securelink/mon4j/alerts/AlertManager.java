@@ -77,6 +77,7 @@ public class AlertManager
                 {
                     int currentPriority = alert.getPriority();
                     alert.setPriority( currentPriority + 1 );
+                    alert.setCreated( new Date(  ) );
                     sendAlert( alert );
                 }
             }
