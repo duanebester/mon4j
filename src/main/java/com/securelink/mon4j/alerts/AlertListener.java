@@ -1,7 +1,5 @@
 package com.securelink.mon4j.alerts;
 
-import com.securelink.mon4j.jobs.CpuJob;
-import java.util.concurrent.Future;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobListener;
@@ -45,7 +43,7 @@ public class AlertListener
             String jobKey = jec.getJobDetail().getKey().toString();
             String info = jee.getMessage();
             String category = getCategory( jec.getJobDetail().getJobClass() );
-            log.error( "Exception thrown by: {} Exception: {}", jobKey, jee.getMessage() );
+            // log.error( "Exception thrown by: {} Exception: {}", jobKey, jee.getMessage() );
 
             alertManager.processAlert( category, info, jobKey );
         }

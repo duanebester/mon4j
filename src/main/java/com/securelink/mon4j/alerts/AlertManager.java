@@ -57,41 +57,39 @@ public class AlertManager
 
     public void processAlert( Alert newAlert )
     {
-        log.info( "    Process Alert" );
-        log.info( "##############################################" );
+        log.info( "--Alert" );
         log.info( newAlert.toString() );
-        log.info( "##############################################" );
+
+        boolean alreadyHaveAlert = false;
+
+        Long time2IncrementMillis = Integer.parseInt( props.getProperty( "incrementPriorityAfter", "3600" ) ) * 1000L;
+
+        for ( Alert alert : alerts )
+        {
+            if ( alert.getKey().equals( newAlert.getKey() ) )
+            {
+                log.info( "Alert already in list..." );
+                alreadyHaveAlert = true;
+                Long now = System.currentTimeMillis();
+                Long alertCreated = alert.getCreated().getTime();
+
+                if ( ( alertCreated + time2IncrementMillis ) < now )
+                {
+                    int currentPriority = alert.getPriority();
+                    alert.setPriority( currentPriority + 1 );
+                    sendAlert( alert );
+                }
+            }
+        }
 
         newAlert.setCreated( new Date() );
 
-        sendAlert( newAlert );
-
-        // alerts.forEach((alert) -> {
-        // if( alert.getKey().equals(newAlert.getKey()))
-        // {
-        // Long now = System.currentTimeMillis();
-        // Long alertCreated = alert.getCreated().getTime();
-        // Long timeSinceCreated = now - alertCreated;
-        //
-        // if ( timeSinceCreated > ( 60L * 1000L ) )
-        // {
-        // newAlert.setPriority( alert.getPriority() + 1 );
-        // alerts.remove(alert);
-        // alerts.add(newAlert);
-        //
-        // sendAlert( newAlert );
-        // }
-        // }
-        // else
-        // {
-        // // Add to list, send alert
-        // alert.setCreated( new Date() );
-        // alerts.add( newAlert );
-        //
-        //
-        // }
-        // });
-
+        if ( !alreadyHaveAlert )
+        {
+            log.info( "Sending First Alert now!" );
+            alerts.add( newAlert );
+            sendAlert( newAlert );
+        }
     }
 
     public void removeAlert( String key )
