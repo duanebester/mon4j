@@ -53,6 +53,28 @@
                 </executions>
             </plugin>
             <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                  <execution>
+                    <phase>package</phase>
+                    <configuration>
+                      <tasks>
+                        <!--
+                          Place any Ant task here. You can add anything
+                          you can add between <target> and </target> in a
+                          build.xml.
+                        -->
+                        <copy file="./src/main/resources/mon4j.properties" tofile="${project.build.directory}/mon4j.properties"/>
+                      </tasks>
+                    </configuration>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
                 <artifactId>maven-java-formatter-plugin</artifactId>
                 <version>0.4</version>

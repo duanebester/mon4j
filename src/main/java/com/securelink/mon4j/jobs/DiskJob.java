@@ -36,7 +36,7 @@ public class DiskJob
                 log.info( fName );
 
                 // Only check C Drive if windows
-                if ( true /* !( win || !fName.contains( "C:" ) ) */)
+                if ( !win || ( win && fName.contains( "C:" ) ) )
                 {
                     FileSystemUsage fsu = getSigar().getFileSystemUsage( fName );
 

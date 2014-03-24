@@ -5,6 +5,7 @@ import com.securelink.mon4j.services.DiskService;
 import com.securelink.mon4j.services.MemoryService;
 import com.securelink.mon4j.util.NativeUtils;
 import com.securelink.mon4j.util.Props;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -29,8 +30,8 @@ public class Monitor
         {
             Services services = Services.getInstance();
             services.addService( new MemoryService() );
-            // services.addService( new DiskService() );
-            // services.addService( new CpuService() );
+            services.addService( new DiskService() );
+            services.addService( new CpuService() );
 
             Engine engine = new Engine();
 
@@ -125,13 +126,15 @@ public class Monitor
 
         try
         {
-            input = Monitor.class.getClassLoader().getResourceAsStream( "mon4j.properties" );
+            // input = Monitor.class.getClassLoader().getResourceAsStream( "mon4j.properties" );
 
-            if ( input == null )
-            {
-                log.error( "Sorry, unable to find mon4j.properties" );
-                System.exit( 1 );
-            }
+            input = new FileInputStream( "mon4j.properties" );
+
+            // if ( input == null )
+            // {
+            // log.error( "Sorry, unable to find mon4j.properties" );
+            // System.exit( 1 );
+            // }
 
             props.load( input );
         }
