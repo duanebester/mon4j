@@ -119,6 +119,11 @@ public class Alert
      */
     public void setPriority( int priority )
     {
+        if ( priority >= 10 )
+        {
+            priority = 10;
+        }
+
         this.priority = priority;
     }
 

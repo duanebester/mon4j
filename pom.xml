@@ -86,10 +86,10 @@
                     </execution>
                 </executions>        
                 <configuration>
-                    <configFile>${project.basedir}/maven-eclipse-codestyle.xml</configFile>
+                    <configFile>${project.basedir}/codestyle.xml</configFile>
                     <compilerSource>1.8</compilerSource>
                     <compilerCompliance>1.8</compilerCompliance>
-                    <compilerTargetPlatform>1.8</compilerTargetPlatform>        
+                    <compilerTargetPlatform>1.8</compilerTargetPlatform>
                 </configuration>          
             </plugin>
         </plugins>

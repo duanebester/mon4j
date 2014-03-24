@@ -1,8 +1,16 @@
 package com.securelink.mon4j.alerts;
 
+import com.securelink.mon4j.client.Client;
+import com.securelink.mon4j.util.Props;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +23,11 @@ public class AlertManager
 
     public Logger log = LoggerFactory.getLogger( AlertManager.class );
 
+    Properties props = Props.getInstance().getProperties();
+
     // private final Object alertLock = new Object();
 
-    private final Set<Alert> alerts = Collections.synchronizedSet( new HashSet<Alert>() );
+    private final List<Alert> alerts = Collections.synchronizedList( new ArrayList<Alert>() );
 
     private AlertManager()
     {
@@ -45,24 +55,43 @@ public class AlertManager
         processAlert( alert );
     }
 
-    public void processAlert( Alert alert )
+    public void processAlert( Alert newAlert )
     {
-        log.info( "\n##############################################" );
-        log.info( alert.toString() );
-        log.info( "##############################################\n" );
-        // get prop for serverURL:port
-        // Client client = new Client("http://");
-        // if ( alerts.contains( alert ) )
+        log.info( "    Process Alert" );
+        log.info( "##############################################" );
+        log.info( newAlert.toString() );
+        log.info( "##############################################" );
+
+        newAlert.setCreated( new Date() );
+
+        sendAlert( newAlert );
+
+        // alerts.forEach((alert) -> {
+        // if( alert.getKey().equals(newAlert.getKey()))
         // {
-        // // Alter priority? If priority changes, send new alert
+        // Long now = System.currentTimeMillis();
+        // Long alertCreated = alert.getCreated().getTime();
+        // Long timeSinceCreated = now - alertCreated;
+        //
+        // if ( timeSinceCreated > ( 60L * 1000L ) )
+        // {
+        // newAlert.setPriority( alert.getPriority() + 1 );
+        // alerts.remove(alert);
+        // alerts.add(newAlert);
+        //
+        // sendAlert( newAlert );
+        // }
         // }
         // else
         // {
         // // Add to list, send alert
         // alert.setCreated( new Date() );
-        // alerts.add( alert );
+        // alerts.add( newAlert );
+        //
         //
         // }
+        // });
+
     }
 
     public void removeAlert( String key )
@@ -70,5 +99,35 @@ public class AlertManager
         alerts.stream().filter((alert) -> (key.equals( alert.getKey() ) )).forEach((alert) -> {
             alerts.remove(alert);
         });
+    }
+
+    private void sendAlert( Alert newAlert )
+    {
+        try
+        {
+            String serverURL = props.getProperty( "alertServerURL", "localhost" );
+            String port = props.getProperty( "alertServerPort", "4680" );
+            String protocol = "http://";
+
+            String uri = props.getProperty( "alertURI", "/alert.action?info={info}&category={category}&key={key}&priority={priority}&summary=blah" );
+
+            uri =
+                uri.replace( "{info}", URLEncoder.encode( newAlert.getInfo(), "UTF-8" ) ).replace( "{category}", URLEncoder.encode( newAlert.getCategory(), "UTF-8" ) ).replace( "{key}",
+                                                                                                                                                                                 URLEncoder.encode( newAlert.getKey(),
+                                                                                                                                                                                                    "UTF-8" ) ).replace( "{priority}",
+                                                                                                                                                                                                                         URLEncoder.encode( String.valueOf( newAlert.getPriority() ),
+                                                                                                                                                                                                                                            "UTF-8" ) );
+
+            log.info( "URL: {}", protocol + serverURL + ":" + port + uri );
+            URI alertUri = new URI( protocol + serverURL + ":" + port + uri );
+            Client client = new Client( alertUri );
+            log.info( "-- before client run --" );
+            client.run();
+            log.info( "-- after client run --" );
+        }
+        catch ( UnsupportedEncodingException | URISyntaxException | InterruptedException ex )
+        {
+            log.error( "Couldn't send alert! {}", ex.getMessage() );
+        }
     }
 }

@@ -32,11 +32,14 @@ public class Client
     }
 
     public void run()
-        throws Exception
+        throws InterruptedException
     {
         String scheme = uri.getScheme() == null ? "http" : uri.getScheme();
         String host = uri.getHost() == null ? "localhost" : uri.getHost();
         int port = uri.getPort();
+
+        log.info( "scheme={}, host={}, port={}", scheme, host, port );
+
         if ( port == -1 )
         {
             if ( "http".equalsIgnoreCase( scheme ) )
