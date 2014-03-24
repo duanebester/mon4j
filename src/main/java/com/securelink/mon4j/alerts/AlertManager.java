@@ -24,6 +24,8 @@ public class AlertManager
     public Logger log = LoggerFactory.getLogger( AlertManager.class );
 
     Properties props = Props.getInstance().getProperties();
+    
+    Long time2IncrementMillis = Integer.parseInt( props.getProperty( "incrementPriorityAfter", "3600" ) ) * 1000L;
 
     // private final Object alertLock = new Object();
 
@@ -62,18 +64,14 @@ public class AlertManager
 
         boolean alreadyHaveAlert = false;
 
-        Long time2IncrementMillis = Integer.parseInt( props.getProperty( "incrementPriorityAfter", "3600" ) ) * 1000L;
-
         for ( Alert alert : alerts )
         {
             if ( alert.getKey().equals( newAlert.getKey() ) )
             {
                 log.info( "Alert already in list..." );
                 alreadyHaveAlert = true;
-                Long now = System.currentTimeMillis();
-                Long alertCreated = alert.getCreated().getTime();
 
-                if ( ( alertCreated + time2IncrementMillis ) < now )
+                if ( ( alert.getCreated().getTime() + time2IncrementMillis ) < System.currentTimeMillis() )
                 {
                     int currentPriority = alert.getPriority();
                     alert.setPriority( currentPriority + 1 );
