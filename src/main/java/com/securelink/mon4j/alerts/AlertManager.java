@@ -59,8 +59,8 @@ public class AlertManager
 
     public void processAlert( Alert newAlert )
     {
-        log.info( "--Alert" );
-        log.info( newAlert.toString() );
+//        log.info( "--Alert" );
+//        log.info( newAlert.toString() );
 
         boolean alreadyHaveAlert = false;
 
@@ -100,31 +100,44 @@ public class AlertManager
 
     private void sendAlert( Alert newAlert )
     {
-        try
+        if ( "true".equals( props.getProperty( "alertServer" ) ) )
         {
-            String serverURL = props.getProperty( "alertServerURL", "localhost" );
-            String port = props.getProperty( "alertServerPort", "4680" );
-            String protocol = "http://";
+            try
+            {
+                String serverURL = props.getProperty( "alertServerURL", "localhost" );
+                String port = props.getProperty( "alertServerPort", "4680" );
+                String protocol = "http://";
 
-            String uri = props.getProperty( "alertURI", "/alert.action?info={info}&category={category}&key={key}&priority={priority}&summary=blah" );
+                String uri = props.getProperty( "alertURI", "/alert.action?info={info}&category={category}&key={key}&priority={priority}&summary=blah" );
 
-            uri =
-                uri.replace( "{info}", URLEncoder.encode( newAlert.getInfo(), "UTF-8" ) ).replace( "{category}", URLEncoder.encode( newAlert.getCategory(), "UTF-8" ) ).replace( "{key}",
-                                                                                                                                                                                 URLEncoder.encode( newAlert.getKey(),
-                                                                                                                                                                                                    "UTF-8" ) ).replace( "{priority}",
-                                                                                                                                                                                                                         URLEncoder.encode( String.valueOf( newAlert.getPriority() ),
-                                                                                                                                                                                                                                            "UTF-8" ) );
+                uri =
+                    uri.replace( "{info}", URLEncoder.encode( newAlert.getInfo(), "UTF-8" ) ).replace( "{category}", URLEncoder.encode( newAlert.getCategory(), "UTF-8" ) ).replace( "{key}",
+                                                                                                                                                                                     URLEncoder.encode( newAlert.getKey(),
+                                                                                                                                                                                                        "UTF-8" ) ).replace( "{priority}",
+                                                                                                                                                                                                                             URLEncoder.encode( String.valueOf( newAlert.getPriority() ),
+                                                                                                                                                                                                                                                "UTF-8" ) );
 
-            log.info( "URL: {}", protocol + serverURL + ":" + port + uri );
-            URI alertUri = new URI( protocol + serverURL + ":" + port + uri );
-            Client client = new Client( alertUri );
-            log.info( "-- before client run --" );
-            client.run();
-            log.info( "-- after client run --" );
+                log.info( "URL: {}", protocol + serverURL + ":" + port + uri );
+                URI alertUri = new URI( protocol + serverURL + ":" + port + uri );
+                Client client = new Client( alertUri );
+                log.info( "-- before client run --" );
+                client.run();
+                log.info( "-- after client run --" );
+            }
+            catch ( UnsupportedEncodingException | URISyntaxException | InterruptedException ex )
+            {
+                log.error( "Couldn't send alert! {}", ex.getMessage() );
+            }
         }
-        catch ( UnsupportedEncodingException | URISyntaxException | InterruptedException ex )
+        else
         {
-            log.error( "Couldn't send alert! {}", ex.getMessage() );
+            log.info("\n _______  ___      _______  ______    _______ \n" +
+                       "|   _   ||   |    |       ||    _ |  |       |\n" +
+                       "|  |_|  ||   |    |    ___||   | ||  |_     _|\n" +
+                       "|       ||   |    |   |___ |   |_||_   |   |  \n" +
+                       "|       ||   |___ |    ___||    __  |  |   |  \n" +
+                       "|   _   ||       ||   |___ |   |  | |  |   |  \n" +
+                       "|__| |__||_______||_______||___|  |_|  |___|  ");
         }
     }
 }

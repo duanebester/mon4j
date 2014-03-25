@@ -125,15 +125,15 @@ public class Monitor
 
         try
         {
-            // input = Monitor.class.getClassLoader().getResourceAsStream( "mon4j.properties" );
+            input = Monitor.class.getClassLoader().getResourceAsStream( "mon4j.properties" );
 
-            input = new FileInputStream( "mon4j.properties" );
+            //input = new FileInputStream( "mon4j.properties" );
 
-            // if ( input == null )
-            // {
-            // log.error( "Sorry, unable to find mon4j.properties" );
-            // System.exit( 1 );
-            // }
+            if ( input == null )
+            {
+                log.error( "Sorry, unable to find mon4j.properties" );
+                System.exit( 1 );
+            }
 
             props.load( input );
         }

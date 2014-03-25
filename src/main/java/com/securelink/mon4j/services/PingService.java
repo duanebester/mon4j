@@ -4,8 +4,6 @@ import com.securelink.mon4j.jobs.PingJob;
 import com.securelink.mon4j.util.Props;
 import java.util.Properties;
 import static org.quartz.JobBuilder.newJob;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.JobBuilder.newJob;
 import org.quartz.JobDetail;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import org.quartz.Trigger;
