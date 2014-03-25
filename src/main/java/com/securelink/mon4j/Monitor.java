@@ -3,12 +3,15 @@ package com.securelink.mon4j;
 import com.securelink.mon4j.services.CpuService;
 import com.securelink.mon4j.services.DiskService;
 import com.securelink.mon4j.services.MemoryService;
+import com.securelink.mon4j.services.PingService;
+import com.securelink.mon4j.services.ServicesService;
 import com.securelink.mon4j.util.NativeUtils;
 import com.securelink.mon4j.util.Props;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,28 +25,13 @@ public class Monitor
 
     public static void main( String args[] )
     {
-        log.info( "Monitor Started" );
-
-        loadProps();
-
-        if ( loadNatives() )
+        if ( loadProps() && loadNatives() )
         {
-            Services services = Services.getInstance();
-
-            if ( "true".equals( Props.getInstance().getProperties().getProperty( "ram.on" ) ) )
-            {
-                services.addService( new MemoryService() );
-            }
-            if ( "true".equals( Props.getInstance().getProperties().getProperty( "disk.on" ) ) )
-            {
-                services.addService( new DiskService() );
-            }
-            if ( "true".equals( Props.getInstance().getProperties().getProperty( "cpu.on" ) ) )
-            {
-                services.addService( new CpuService() );
-            }
+            loadServices();
 
             Engine engine = new Engine();
+
+            log.info( "Monitor Started" );
 
             engine.start();
 
@@ -63,7 +51,7 @@ public class Monitor
         }
         else
         {
-            log.error( "Could not load native libs" );
+            log.error( "Could not load..." );
             System.exit( 1 );
         }
     }
@@ -114,6 +102,7 @@ public class Monitor
                             NativeUtils.loadLibraryFromJar( sb.append( "libsigar-universal-macosx.dylib" ).toString() );
                         break;
                     default:
+                        log.error( "Could not load native libs" );
                         log.error( "Invalid OS name?" );
                         return false;
                 }
@@ -129,7 +118,7 @@ public class Monitor
         }
     }
 
-    private static void loadProps()
+    private static boolean loadProps()
     {
         Properties props = new Properties();
         InputStream input = null;
@@ -169,6 +158,45 @@ public class Monitor
             }
         }
 
+        if ( !testAllPropsExist( props ) )
+        {
+            log.error( "Not all keys have values in mon4j.properties!" );
+            return false;
+        }
+
         Props.getInstance().setProperties( props );
+
+        return true;
+    }
+
+    private static void loadServices()
+    {
+        Services services = Services.getInstance();
+
+        if ( "true".equals( Props.getInstance().getProperties().getProperty( "ram.on" ) ) )
+        {
+            services.addService( new MemoryService() );
+        }
+        if ( "true".equals( Props.getInstance().getProperties().getProperty( "disk.on" ) ) )
+        {
+            services.addService( new DiskService() );
+        }
+        if ( "true".equals( Props.getInstance().getProperties().getProperty( "cpu.on" ) ) )
+        {
+            services.addService( new CpuService() );
+        }
+        if ( "true".equals( Props.getInstance().getProperties().getProperty( "ping.on" ) ) )
+        {
+            services.addService( new PingService() );
+        }
+        if ( "true".equals( Props.getInstance().getProperties().getProperty( "services.on" ) ) )
+        {
+            services.addService( new ServicesService() );
+        }
+    }
+
+    private static boolean testAllPropsExist( Properties props )
+    {
+        return props.keySet().stream().map( ( k ) -> ( String ) k).noneMatch( ( key ) -> ( StringUtils.isBlank( props.getProperty( key ) ) ) );
     }
 }

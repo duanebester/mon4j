@@ -19,6 +19,12 @@ public interface IService
 
     public static final String OPERATOR = "operator";
 
+    public static final String IP_ADDRESSES = "ipAddresses";
+
+    public static final String FAIL_COUNT = "pingFailCount";
+
+    public static final String SERVICE_DOWN_TIME = "timeDownSeconds";
+
     public JobDetail getJob();
 
     public Trigger getTrigger();

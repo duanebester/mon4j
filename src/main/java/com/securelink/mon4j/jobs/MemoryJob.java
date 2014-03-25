@@ -35,7 +35,7 @@ public class MemoryJob
 
         if ( stateProcessor( jec ) == JobState.ALERT )
         {
-            throw new JobExecutionException( "Memory usage has been over " + getArmValue() + " for " + getArmDelay() + " seconds" );
+            throw new JobExecutionException( "Memory usage has been over " + getArmValue() + getOperator() + " for " + getArmDelay() + " seconds" );
         }
     }
 }

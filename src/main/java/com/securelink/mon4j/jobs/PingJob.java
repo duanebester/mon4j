@@ -1,7 +1,9 @@
 package com.securelink.mon4j.jobs;
 
+import com.securelink.mon4j.util.Props;
 import java.io.IOException;
 import java.net.InetAddress;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -17,14 +19,19 @@ public class PingJob
     public void execute( JobExecutionContext jec )
         throws JobExecutionException
     {
-        try
+        String ips = Props.getInstance().getProperties().getProperty( "pingURL" );
+
+        for ( String ip : StringUtils.split( ips, "," ) )
         {
-            InetAddress inet = InetAddress.getByName( "127.0.0.1" );
-            log.info( inet.isReachable( 5000 ) ? "Host reachable" : "Host Not Reachable" );
-        }
-        catch ( IOException ex )
-        {
-            log.error( ex.getMessage() );
+            try
+            {
+                InetAddress inet = InetAddress.getByName( ip );
+                log.info( ( inet.isReachable( 5000 ) ? "Host {} reachable" : "Host {} Not Reachable" ), ip );
+            }
+            catch ( IOException ex )
+            {
+                log.error( ex.getMessage() );
+            }
         }
 
     }

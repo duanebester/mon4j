@@ -24,7 +24,7 @@ public class AlertManager
     public Logger log = LoggerFactory.getLogger( AlertManager.class );
 
     Properties props = Props.getInstance().getProperties();
-    
+
     Long time2IncrementMillis = Integer.parseInt( props.getProperty( "incrementPriorityAfter", "3600" ) ) * 1000L;
 
     // private final Object alertLock = new Object();
@@ -75,7 +75,7 @@ public class AlertManager
                 {
                     int currentPriority = alert.getPriority();
                     alert.setPriority( currentPriority + 1 );
-                    alert.setCreated( new Date(  ) );
+                    alert.setCreated( new Date() );
                     sendAlert( alert );
                 }
             }

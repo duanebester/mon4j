@@ -20,7 +20,7 @@ public class ServiceJob
                 try
                 {
                     Service service = new Service(name.toString());
-                    log.info("Service: {}, Status: {}", name.toString(), service.getStatus());
+                    log.info("Service: {}", service);
                 }
                 catch (Win32Exception ex) {
                     log.error(ex.getMessage());

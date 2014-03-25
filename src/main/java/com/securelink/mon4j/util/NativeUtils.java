@@ -47,7 +47,7 @@ public class NativeUtils
         }
         else
         {
-            log.error( "----- null myLib -----" );
+            log.error( "----- No native dependencies jar :( -----" );
         }
     }
 }

@@ -58,7 +58,7 @@ public class DiskJob
 
         if ( stateProcessor( jec ) == JobState.ALERT )
         {
-            throw new JobExecutionException( "ALERT!" );
+            throw new JobExecutionException( "Disk has been running over " + getArmValue() + getOperator() + " for " + getArmDelay() + " seconds" );
         }
     }
 
