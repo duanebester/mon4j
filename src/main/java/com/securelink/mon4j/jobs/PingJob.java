@@ -28,17 +28,22 @@ public class PingJob
 
         for ( String ip : _ips )
         {
+            ip = ip.trim();
+            int p = RPC.ping(ip, 22);
+
+            log.info("p {} ip {}", p, ip );
+            /*
             try
             {
-                ip = ip.trim();
-                InetAddress inet = InetAddress.getByName( ip );
+                
+                //InetAddress inet = InetAddress.getByName( ip );
 
                 try
                 {
-                    NetStat stat = getSigar().getNetStat( inet.getAddress(), 22 );
+                    //NetStat stat = getSigar().getNetStat( inet.getAddress(), 22 );
                     int p = RPC.ping(ip, 1000);
 
-                    log.info("stat {} p {} ip {}", stat.getTcpStates(), p, ip );
+                    log.info("p {} ip {}", p, ip );
                 }
                 catch ( SigarException se )
                 {
@@ -50,7 +55,7 @@ public class PingJob
             catch ( UnknownHostException ex )
             {
                 log.error( ex.getMessage() );
-            }
+            }*/
         }
 
     }
