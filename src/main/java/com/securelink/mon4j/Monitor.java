@@ -127,7 +127,7 @@ public class Monitor
         {
             input = Monitor.class.getClassLoader().getResourceAsStream( "mon4j.properties" );
 
-            //input = new FileInputStream( "mon4j.properties" );
+            // input = new FileInputStream( "mon4j.properties" );
 
             if ( input == null )
             {

@@ -59,8 +59,8 @@ public class AlertManager
 
     public void processAlert( Alert newAlert )
     {
-//        log.info( "--Alert" );
-//        log.info( newAlert.toString() );
+        // log.info( "--Alert" );
+        // log.info( newAlert.toString() );
 
         boolean alreadyHaveAlert = false;
 
@@ -131,13 +131,9 @@ public class AlertManager
         }
         else
         {
-            log.info("\n _______  ___      _______  ______    _______ \n" +
-                       "|   _   ||   |    |       ||    _ |  |       |\n" +
-                       "|  |_|  ||   |    |    ___||   | ||  |_     _|\n" +
-                       "|       ||   |    |   |___ |   |_||_   |   |  \n" +
-                       "|       ||   |___ |    ___||    __  |  |   |  \n" +
-                       "|   _   ||       ||   |___ |   |  | |  |   |  \n" +
-                       "|__| |__||_______||_______||___|  |_|  |___|  ");
+            log.info( "\n _______  ___      _______  ______    _______ \n" + "|   _   ||   |    |       ||    _ |  |       |\n" + "|  |_|  ||   |    |    ___||   | ||  |_     _|\n"
+                + "|       ||   |    |   |___ |   |_||_   |   |  \n" + "|       ||   |___ |    ___||    __  |  |   |  \n" + "|   _   ||       ||   |___ |   |  | |  |   |  \n"
+                + "|__| |__||_______||_______||___|  |_|  |___|  " );
         }
     }
 }
