@@ -93,9 +93,17 @@ public class AlertManager
 
     public void removeAlert( String key )
     {
-        alerts.stream().filter((alert) -> (key.equals( alert.getKey() ) )).forEach((alert) -> {
-            alerts.remove(alert);
-        });
+        for ( Alert alert : alerts )
+        {
+            if ( alert.getKey().equals( key ) )
+            {
+                alerts.remove( alert );
+            }
+        }
+
+        // alerts.stream().filter((alert) -> (key.equals( alert.getKey() ) )).forEach((alert) -> {
+        // alerts.remove(alert);
+        // });
     }
 
     private void sendAlert( Alert newAlert )

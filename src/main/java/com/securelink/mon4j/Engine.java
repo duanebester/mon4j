@@ -22,32 +22,45 @@ public class Engine
 
     public boolean start()
     {
-        try 
+        try
         {
-            // Grab the Scheduler instance from the Factory 
+            // Grab the Scheduler instance from the Factory
             scheduler = StdSchedulerFactory.getDefaultScheduler();
-            
+
             List<IService> services = Services.getInstance().getServices();
-            
-            services.stream().forEach((service) -> {
+
+            for ( IService service : services )
+            {
                 try
                 {
-                    scheduler.scheduleJob(service.getJob(), service.getTrigger());
+                    scheduler.scheduleJob( service.getJob(), service.getTrigger() );
                 }
-                catch( SchedulerException se )
+                catch ( SchedulerException se )
                 {
-                    log.error(se.getMessage());
+                    log.error( se.getMessage() );
                 }
-            });
-            
+            }
+
+            // services.stream().forEach((service) -> {
+            // try
+            // {
+            // scheduler.scheduleJob(service.getJob(), service.getTrigger());
+            // }
+            // catch( SchedulerException se )
+            // {
+            // log.error(se.getMessage());
+            // }
+            // });
+
             // Listen for Job Executions throwing alerts
             AlertListener listen = new AlertListener();
-            
-            scheduler.getListenerManager().addJobListener(listen, EverythingMatcher.allJobs());
+
+            scheduler.getListenerManager().addJobListener( listen, EverythingMatcher.allJobs() );
             // start it off
             scheduler.start();
 
-        } catch (SchedulerException se) 
+        }
+        catch ( SchedulerException se )
         {
             log.error( se.getMessage() );
             return false;

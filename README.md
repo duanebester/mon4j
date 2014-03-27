@@ -9,7 +9,7 @@ To build:
 
 The sigar-native-dependencies jar is in the lib/ directory. Ultimately you'd like to have this jar in your local maven repo for building and packaging.
 
-***Currently, you'll need java 8 installed to compile / run.***
+***Currently, you'll need java 7 installed to compile / run.***
 
     mvn package
 
@@ -23,6 +23,5 @@ Please edit the mon4j.properties file, or at least take a look to see what's adj
 
 To do:
 
-* Have a separate branch / option for Java 7
 * I'm at a loss with Ping, but will keep trying
 * Need to implement EventLog job
