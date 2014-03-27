@@ -11,8 +11,9 @@ public class SystemPropertiesJob
     extends BaseJob
 {
     @Override
-    public void execute( JobExecutionContext jec ) throws JobExecutionException 
+    public void execute( JobExecutionContext jec )
+        throws JobExecutionException
     {
-        System.getProperties().stringPropertyNames().forEach((prop) -> { log.info("Property {}", prop); });
+        // System.getProperties().stringPropertyNames().forEach((prop) -> { log.info("Property {}", prop); });
     }
 }

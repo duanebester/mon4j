@@ -29,7 +29,7 @@ public class Monitor
         {
             loadServices();
 
-            Engine engine = new Engine();
+            final Engine engine = new Engine();
 
             log.info( "Monitor Started" );
 
@@ -197,6 +197,17 @@ public class Monitor
 
     private static boolean testAllPropsExist( Properties props )
     {
-        return props.keySet().stream().map( ( k ) -> ( String ) k).noneMatch( ( key ) -> ( StringUtils.isBlank( props.getProperty( key ) ) ) );
+        for ( Object key : props.keySet() )
+        {
+            if ( StringUtils.isBlank( props.getProperty( (String) key ) ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
+
+        // return props.keySet().stream().map( ( k ) -> ( String ) k).noneMatch( ( key ) -> ( StringUtils.isBlank(
+        // props.getProperty( key ) ) ) );
     }
 }
