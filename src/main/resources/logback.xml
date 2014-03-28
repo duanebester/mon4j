@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+  
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>mon4j.log</file>
+        <append>true</append>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+  
+    <appender name="JOBS-FILE" class="ch.qos.logback.core.FileAppender">
+        <file>jobs.log</file>
+        <append>true</append>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+    <logger name="jobs" level="DEBUG" additivity="false">
+        <appender-ref ref="JOBS-FILE"/>
+    </logger>
+    
+    <logger name="org.quartz" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+ 
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+    
+</configuration>

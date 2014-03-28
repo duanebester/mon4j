@@ -3,8 +3,6 @@ package com.securelink.mon4j.jobs;
 import org.hyperic.sigar.SigarException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
@@ -13,8 +11,6 @@ import org.slf4j.LoggerFactory;
 public class MemoryJob
     extends BaseArmJob
 {
-    public Logger log = LoggerFactory.getLogger( MemoryJob.class );
-
     @Override
     public void execute( JobExecutionContext jec )
         throws JobExecutionException
