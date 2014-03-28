@@ -10,13 +10,12 @@ import org.quartz.Trigger;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
- * 
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
- *
  */
 
-public class EventLogService implements IService 
-{    
+public class EventLogService
+    implements IService
+{
     private static final String JOB = "eventLogJob";
 
     private static final String TRIGGER = "eventLogTrigger";
@@ -29,7 +28,7 @@ public class EventLogService implements IService
 
     private final Trigger trigger;
 
-    public EventLogService() 
+    public EventLogService()
     {
         job = newJob( EventLogJob.class ).withIdentity( JOB, GROUP ).build();
 
@@ -42,7 +41,8 @@ public class EventLogService implements IService
      * @return the job
      */
     @Override
-    public JobDetail getJob() {
+    public JobDetail getJob()
+    {
         return job;
     }
 
@@ -50,7 +50,8 @@ public class EventLogService implements IService
      * @return the trigger
      */
     @Override
-    public Trigger getTrigger() {
+    public Trigger getTrigger()
+    {
         return trigger;
     }
 

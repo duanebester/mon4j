@@ -28,7 +28,7 @@ public class ServiceJob
 
             for ( Object name : list )
             {
-                log.info( "Service {} :: {}", (String) name, name.toString() );
+                log.info( "Service {}", (String) name );
                 try
                 {
                     Service service = new Service( name.toString() );
@@ -37,7 +37,7 @@ public class ServiceJob
                 }
                 catch ( Win32Exception ex )
                 {
-                    //
+                    log.error( ex.getMessage() );
                 }
             }
 
