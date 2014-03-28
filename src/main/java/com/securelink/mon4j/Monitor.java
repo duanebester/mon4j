@@ -2,6 +2,7 @@ package com.securelink.mon4j;
 
 import com.securelink.mon4j.services.CpuService;
 import com.securelink.mon4j.services.DiskService;
+import com.securelink.mon4j.services.EventLogService;
 import com.securelink.mon4j.services.MemoryService;
 import com.securelink.mon4j.services.PingService;
 import com.securelink.mon4j.services.ServicesService;
@@ -192,6 +193,10 @@ public class Monitor
         if ( "true".equals( Props.getInstance().getProperties().getProperty( "services.on" ) ) )
         {
             services.addService( new ServicesService() );
+        }
+        if ( "true".equals( Props.getInstance().getProperties().getProperty( "eventLog.on" ) ) )
+        {
+            services.addService( new EventLogService() );
         }
     }
 
