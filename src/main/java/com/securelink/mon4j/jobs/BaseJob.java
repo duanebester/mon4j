@@ -6,8 +6,6 @@ import org.hyperic.sigar.Sigar;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.PersistJobDataAfterExecution;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
@@ -23,8 +21,6 @@ public abstract class BaseJob
     private static final Sigar sigar = new Sigar();
 
     private final Object lock = new Object();
-
-    public Logger log = LoggerFactory.getLogger( "jobs" );
 
     /**
      * @return the sigar

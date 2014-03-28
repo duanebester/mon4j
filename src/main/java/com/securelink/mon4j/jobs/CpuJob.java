@@ -29,17 +29,10 @@ public class CpuJob
         }
         catch ( SigarException ex )
         {
-            log.error( ex.getMessage() );
             // Alert here?
             setCurrentValue( -1 );
         }
 
-        log.info( "ArmValue {}", getArmValue() );
-        log.info( ">>--- CPU --> {}", getCurrentValue() );
-
-        if ( stateProcessor( jec ) == JobState.ALERT )
-        {
-            throw new JobExecutionException( "CPU has been running over " + getArmValue() + getOperator() + " for " + getArmDelay() + " seconds" );
-        }
+        stateProcessor( jec );
     }
 }

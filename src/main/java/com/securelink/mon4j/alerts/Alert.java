@@ -16,28 +16,32 @@ public class Alert
 
     private String key;
 
+    private String summary;
+
     private Date created;
 
     public Alert()
     {
     }
 
-    public Alert( String category, String info, int priority, String key )
+    public Alert( String category, String info, int priority, String key, String summary )
     {
         this.category = category;
         this.info = info;
         this.priority = priority;
         this.key = key;
+        this.summary = summary;
     }
 
     @Override
     public int hashCode()
     {
         int hash = 3;
-        hash = 97 * hash + Objects.hashCode( this.category );
-        hash = 97 * hash + Objects.hashCode( this.info );
-        hash = 97 * hash + this.priority;
-        hash = 97 * hash + Objects.hashCode( this.key );
+        hash = 31 * hash + Objects.hashCode( this.category );
+        hash = 31 * hash + Objects.hashCode( this.info );
+        hash = 31 * hash + this.priority;
+        hash = 31 * hash + Objects.hashCode( this.key );
+        hash = 31 * hash + Objects.hashCode( this.summary );
         return hash;
     }
 
@@ -65,13 +69,17 @@ public class Alert
         {
             return false;
         }
-        return Objects.equals( this.key, other.key );
+        if ( !Objects.equals( this.key, other.key ) )
+        {
+            return false;
+        }
+        return Objects.equals( this.summary, other.summary );
     }
 
     @Override
     public String toString()
     {
-        return "Alert{" + "category=" + category + ", info=" + info + ", priority=" + priority + ", key=" + key + '}';
+        return "Alert{" + "category=" + category + ", info=" + info + ", priority=" + priority + ", key=" + key + ", summary=" + summary + '}';
     }
 
     /**
@@ -157,6 +165,22 @@ public class Alert
     public void setCreated( Date created )
     {
         this.created = created;
+    }
+
+    /**
+     * @return the summary
+     */
+    public String getSummary()
+    {
+        return summary;
+    }
+
+    /**
+     * @param summary the summary to set
+     */
+    public void setSummary( String summary )
+    {
+        this.summary = summary;
     }
 
 }

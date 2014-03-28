@@ -5,6 +5,8 @@ import org.hyperic.sigar.win32.Service;
 import org.hyperic.sigar.win32.Win32Exception;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="mailto:duane@securelink.com">Duane Bester</a>
@@ -13,6 +15,8 @@ import org.quartz.JobExecutionException;
 public class ServiceJob
     extends BaseJob
 {
+    public Logger log = LoggerFactory.getLogger( this.getClass() );
+
     @Override
     public void execute( JobExecutionContext jec )
         throws JobExecutionException
@@ -24,14 +28,16 @@ public class ServiceJob
 
             for ( Object name : list )
             {
+                log.info( "Service {} :: {}", (String) name, name.toString() );
                 try
                 {
                     Service service = new Service( name.toString() );
-                    log.info( "Service: {}", service );
+
+                    log.info( "Service Status: {}", service.getStatusString() );
                 }
                 catch ( Win32Exception ex )
                 {
-                    log.error( ex.getMessage() );
+                    //
                 }
             }
 
@@ -49,7 +55,7 @@ public class ServiceJob
         }
         catch ( Win32Exception ex )
         {
-            log.error( ex.getMessage() );
+            //
         }
     }
 }

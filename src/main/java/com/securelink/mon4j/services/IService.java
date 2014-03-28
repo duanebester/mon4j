@@ -8,7 +8,6 @@ import org.quartz.Trigger;
  */
 public interface IService
 {
-
     public static final String ARM_VALUE = "armValue";
 
     public static final String CURRENT_VALUE = "currentValue";
@@ -28,5 +27,4 @@ public interface IService
     public JobDetail getJob();
 
     public Trigger getTrigger();
-
 }

@@ -51,16 +51,16 @@ public class AlertManager
         return instance;
     }
 
-    public void processAlert( String category, String info, String key )
+    public void processAlert( String category, String info, String key, String summary )
     {
-        Alert alert = new Alert( category, info, 1, key );
+        Alert alert = new Alert( category, info, 1, key, summary );
         processAlert( alert );
     }
 
     public void processAlert( Alert newAlert )
     {
         // log.info( "--Alert" );
-        // log.info( newAlert.toString() );
+        log.info( newAlert.toString() );
 
         boolean alreadyHaveAlert = false;
 

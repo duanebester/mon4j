@@ -29,8 +29,6 @@ public class DiskJob
             {
                 String fName = win ? file.getAbsolutePath() + "\\" : file.getAbsolutePath();
 
-                log.info( fName );
-
                 // Only check C Drive if windows
                 if ( !win || ( win && fName.contains( "C:" ) ) )
                 {
@@ -46,16 +44,10 @@ public class DiskJob
         }
         catch ( SigarException ex )
         {
-            log.error( ex.getMessage() );
+            //
         }
 
-        log.info( "ArmValue {}", getArmValue() );
-        log.info( ">>--- DISK --> {}", getCurrentValue() );
-
-        if ( stateProcessor( jec ) == JobState.ALERT )
-        {
-            throw new JobExecutionException( "Disk has been running over " + getArmValue() + getOperator() + " for " + getArmDelay() + " seconds" );
-        }
+        stateProcessor( jec );
     }
 
 }

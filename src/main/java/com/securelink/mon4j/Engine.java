@@ -1,6 +1,6 @@
 package com.securelink.mon4j;
 
-import com.securelink.mon4j.alerts.AlertListener;
+import com.securelink.mon4j.alerts.ArmAlertListener;
 import com.securelink.mon4j.services.IService;
 import java.util.List;
 import org.quartz.Scheduler;
@@ -53,7 +53,7 @@ public class Engine
             // });
 
             // Listen for Job Executions throwing alerts
-            AlertListener listen = new AlertListener();
+            ArmAlertListener listen = new ArmAlertListener();
 
             scheduler.getListenerManager().addJobListener( listen, EverythingMatcher.allJobs() );
             // start it off

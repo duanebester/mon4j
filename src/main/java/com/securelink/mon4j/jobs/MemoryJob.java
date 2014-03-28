@@ -23,15 +23,14 @@ public class MemoryJob
         }
         catch ( SigarException se )
         {
-            log.error( se.getMessage() );
+            //
         }
-
-        log.info( "ArmValue {}", getArmValue() );
-        log.info( ">>--- MEMORY --> {}", getCurrentValue() );
 
         if ( stateProcessor( jec ) == JobState.ALERT )
         {
             throw new JobExecutionException( "Memory usage has been over " + getArmValue() + getOperator() + " for " + getArmDelay() + " seconds" );
         }
+
+        stateProcessor( jec );
     }
 }

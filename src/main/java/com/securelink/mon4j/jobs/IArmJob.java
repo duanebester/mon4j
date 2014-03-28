@@ -34,4 +34,6 @@ public interface IArmJob
 
     public JobState stateProcessor( JobExecutionContext jec )
         throws JobExecutionException;
+
+    public void setup( JobExecutionContext jec );
 }

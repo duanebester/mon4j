@@ -1,9 +1,5 @@
 package com.securelink.mon4j.jobs;
 
-import static com.securelink.mon4j.jobs.IArmJob.ARM_DELAY;
-import static com.securelink.mon4j.jobs.IArmJob.ARM_VALUE;
-import static com.securelink.mon4j.jobs.IArmJob.OPERATOR;
-import static com.securelink.mon4j.jobs.IArmJob.RE_ARM_VALUE;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -23,17 +19,18 @@ public abstract class BaseArmJob
 
     private double currentValue;
 
-    private String operator; // Known to do percent
+    private String operator;
 
     private JobState state;
 
     private Long time2TriggerAlarm;
 
-    private Long thresholdWait; // Why not store ArmDelay as milliseconds?
+    private Long thresholdWait;
 
     private Long now;
 
-    protected void setup( JobExecutionContext jec )
+    @Override
+    public void setup( JobExecutionContext jec )
     {
         JobDataMap jdm = jec.getJobDetail().getJobDataMap();
 
@@ -60,8 +57,6 @@ public abstract class BaseArmJob
         // precalc current time (now)
         now = System.currentTimeMillis();
 
-        log.info( "Current State: {}", getState() );
-
         switch ( getState() )
         {
             case NORMAL:
@@ -70,16 +65,13 @@ public abstract class BaseArmJob
                     state = JobState.PENDING;
                     // precalc of time2TriggerAlarm will help speed up processing
                     time2TriggerAlarm = now + thresholdWait; // time in future
-                    log.info( "CurrentVal {} >= ArmValue {} -- time2TriggerAlarm = {} -- thresholdWait = {}", getCurrentValue(), getArmValue(), time2TriggerAlarm, thresholdWait );
                     jdm.put( TIME_TO_TRIGGER, time2TriggerAlarm );
                 }
                 break;
             case PENDING:
-                log.info( "PENDING: now = {}, time2Trigger = {}", now, time2TriggerAlarm );
                 if ( getCurrentValue() < getReArmValue() )
                 {
                     state = JobState.NORMAL;
-                    log.info( "Current {} < ReArm {} Switching to NORMAL", getCurrentValue(), getReArmValue() );
                 }
                 else if ( now > time2TriggerAlarm ) // While less, stay in pending  
                 {
