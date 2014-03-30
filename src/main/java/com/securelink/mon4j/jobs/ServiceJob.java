@@ -23,39 +23,28 @@ public class ServiceJob
     {
         try
         {
-
+            // TODO: Get list of services from properties file
             List list = Service.getServiceNames();
 
             for ( Object name : list )
             {
-                log.info( "Service {}", (String) name );
                 try
                 {
                     Service service = new Service( name.toString() );
 
-                    log.info( "Service Status: {}", service.getStatusString() );
+                    log.info( "Service Name: {} Status: {}", name.toString(), service.getStatusString() );
                 }
                 catch ( Win32Exception ex )
                 {
+                    // Unable to open service
                     log.error( ex.getMessage() );
                 }
             }
-
-            // Service.getServiceNames().forEach((name) -> {
-            // try
-            // {
-            // Service service = new Service(name.toString());
-            // log.info("Service: {}", service);
-            // }
-            // catch (Win32Exception ex) {
-            // log.error(ex.getMessage());
-            // }
-            // });
-
         }
         catch ( Win32Exception ex )
         {
-            //
+            // Unable to get Service Names
+            log.error( ex.getMessage() );
         }
     }
 }

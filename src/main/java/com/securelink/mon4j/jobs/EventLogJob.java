@@ -1,6 +1,5 @@
 package com.securelink.mon4j.jobs;
 
-import java.util.logging.Level;
 import org.hyperic.sigar.win32.EventLog;
 import org.hyperic.sigar.win32.EventLogRecord;
 import org.hyperic.sigar.win32.Win32Exception;
@@ -22,6 +21,7 @@ public class EventLogJob
     public void execute( JobExecutionContext jec )
         throws JobExecutionException
     {
+        // TODO: Get log criticality from props file
         String[] logNames = EventLog.getLogNames();
 
         for ( String logName : logNames )
@@ -44,7 +44,7 @@ public class EventLogJob
     private int readAll( String logname )
         throws Exception
     {
-        int fail = 0, success = 0, max = 500;
+        int fail = 0, success = 0, max = 50;
         EventLogRecord record;
         EventLog log = new EventLog();
 
@@ -63,6 +63,7 @@ public class EventLogJob
             try
             {
                 record = log.read( i );
+                logger.info(record.toString());
                 success++;
                 if ( success > max )
                 {
