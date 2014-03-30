@@ -27,7 +27,7 @@ public class EventLogJob
         for ( String logName : logNames )
         {
             logger.info( "EventLog: {}", logName );
-            
+
             try
             {
                 readAll( logName );
@@ -38,7 +38,6 @@ public class EventLogJob
             }
         }
 
-        
     }
 
     private int readAll( String logname )
@@ -63,7 +62,7 @@ public class EventLogJob
             try
             {
                 record = log.read( i );
-                logger.info(record.toString());
+                logger.info( record.toString() );
                 success++;
                 if ( success > max )
                 {
