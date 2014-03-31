@@ -21,12 +21,12 @@ After maven package, you will have a mon4j jar, a lib folder, and a mon4j.proper
 
 In the mon4j.properties file, you'll see properties like this:
 
-cpu.on=false
-cpu.armValue=9.0
-cpu.armDelay=60
-cpu.operator=percent
-cpu.reArmValue=5.0
-cpu.intervalInSeconds=5
+* cpu.on=false
+* cpu.armValue=9.0
+* cpu.armDelay=60
+* cpu.operator=percent
+* cpu.reArmValue=5.0
+* cpu.intervalInSeconds=5
 
 The above block represents an ArmJob. Arm because they require a threshold value (based on the operator) to be crossed for a certain amount of time. The amount of time before triggering an alert is the armDelay. If the job falls below the reArmValue, then the job status resets to normal. 
 
