@@ -32,7 +32,7 @@ The above block represents an ArmJob. Arm because they require a threshold value
 
 The above example is more specifically, a CPU Job where cpu.on=true will turn this job on. If the CPU usage is above 9.0% for 60 seconds, then an alert will be triggered. The job runs every 5 seconds as specified by the intervalInSeconds property. If the CPU is above 9.0% for say, 30 seconds, and then dips below the reArmValue of 5.0% then everything gets reset. The DISK, CPU, and MEMORY jobs will follow the above pattern.
 
-Please edit the mon4j.properties file, or at least take a look to see what's adjustable.
+Please edit the mon4j.properties file, or at least take a look to see what's adjustable. Running the app is the standard:
 
     java -jar mon4j-0.1.0.jar
 
