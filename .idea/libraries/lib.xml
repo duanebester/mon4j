@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/lib/slf4j-api-1.7.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/logback-classic-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/logback-core-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/sigar-native-deps-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/quartz-2.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/sigar-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/quartz-jobs-2.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/c3p0-0.9.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/netty-all-5.0.0.Alpha1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/lib/commons-lang3-3.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
