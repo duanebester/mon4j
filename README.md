@@ -5,8 +5,6 @@ Alert Monitoring for Java
 
 *Combining Sigar, Netty, and Quartz*
 
-[monty.io](https://monty.io)
-
 To build:
 
 The sigar-native-dependencies jar is in the lib/ directory. Ultimately you'd like to have this jar in your local maven repo for building and packaging.
